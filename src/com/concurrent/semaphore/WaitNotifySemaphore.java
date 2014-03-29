@@ -18,7 +18,7 @@ public class WaitNotifySemaphore  extends Semaphore {
 	synchronized public void doWait(){
 		try {
 			this.acquire();
-			this.wait();
+			this.wait(5000);
 		} catch (InterruptedException e) {
 			// do nothing
 		}
