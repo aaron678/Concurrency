@@ -12,8 +12,15 @@ public class ThreadA extends Thread {
 		new ThreadB(this.semaphore).start();
 		System.out.println("ThreadA acquiring semaphore token and waiting for ThreadB to complete.");
 		semaphore.doWait();
+		synchronized (semaphore){
+			while (semaphore.availablePermits() == 0){ // Protects against spurious wakeups
+				try {
+					semaphore.wait();
+				} catch (InterruptedException e) {  }
+			}
+		}
 		try {
-			Thread.sleep(100);
+			Thread.sleep(100); // represents work performed in the run method
 		} catch (InterruptedException e) { 	}
 		System.out.println("ThreadA completing run method.");
 
